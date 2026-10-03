@@ -10,11 +10,11 @@
           <thead><tr><th>Customer</th><th>ID number</th><th>Orders</th><th>Total spent</th><th>Status</th></tr></thead>
           <tbody>
             <tr v-for="customer in customers" :key="customer.idNumber">
-              <td><strong>{{ customer.name }}</strong></td>
-              <td>{{ customer.idNumber }}</td>
-              <td>{{ customer.orders }}</td>
-              <td>₱{{ customer.spent }}</td>
-              <td><span class="status-pill completed">Active</span></td>
+              <td data-label="Customer"><strong>{{ customer.name }}</strong></td>
+              <td data-label="ID number">{{ customer.idNumber }}</td>
+              <td data-label="Orders">{{ customer.orders }}</td>
+              <td data-label="Total spent">₱{{ customer.spent }}</td>
+              <td data-label="Status"><span class="status-pill completed">Active</span></td>
             </tr>
             <tr v-if="!customers.length"><td colspan="5" class="table-empty">No student accounts yet.</td></tr>
           </tbody>

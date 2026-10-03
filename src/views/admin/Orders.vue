@@ -14,12 +14,12 @@
           <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
           <tbody>
             <tr v-for="order in filtered" :key="order.id">
-              <td><strong>{{ order.id }}</strong></td>
-              <td>{{ order.customerName || 'Campus Student' }}<br /><small>{{ order.customerId ? `ID ${order.customerId}` : '' }}</small></td>
-              <td>{{ order.items.map(i => `${i.name} × ${i.quantity}`).join(', ') }}</td>
-              <td>₱{{ order.total }}</td>
-              <td><span class="status-pill" :class="order.status">{{ order.status }}</span></td>
-              <td>
+              <td data-label="Order"><strong>{{ order.id }}</strong></td>
+              <td data-label="Customer"><span>{{ order.customerName || 'Campus Student' }}<br /><small>{{ order.customerId ? `ID ${order.customerId}` : '' }}</small></span></td>
+              <td data-label="Items">{{ order.items.map(i => `${i.name} × ${i.quantity}`).join(', ') }}</td>
+              <td data-label="Total">₱{{ order.total }}</td>
+              <td data-label="Status"><span class="status-pill" :class="order.status">{{ order.status }}</span></td>
+              <td data-label="Action">
                 <select :value="order.status" @change="changeStatus(order.id, $event.target.value)">
                   <option v-for="s in orderStatuses" :key="s" :value="s">{{ s }}</option>
                 </select>

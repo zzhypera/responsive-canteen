@@ -22,10 +22,10 @@
           <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
           <tbody>
             <tr v-for="order in recentOrders" :key="order.id">
-              <td>#{{ order.id }}</td>
-              <td>{{ order.customerName || 'Campus Student' }}<small v-if="order.customerId"> · ID {{ order.customerId }}</small></td>
-              <td>₱{{ order.total }}</td>
-              <td><span class="status-pill" :class="order.status">{{ order.status }}</span></td>
+              <td data-label="Order">#{{ order.id }}</td>
+              <td data-label="Customer"><span>{{ order.customerName || 'Campus Student' }}<small v-if="order.customerId"> · ID {{ order.customerId }}</small></span></td>
+              <td data-label="Total">₱{{ order.total }}</td>
+              <td data-label="Status"><span class="status-pill" :class="order.status">{{ order.status }}</span></td>
             </tr>
             <tr v-if="!recentOrders.length"><td colspan="4" class="table-empty">No orders yet.</td></tr>
           </tbody>
@@ -40,8 +40,8 @@
           <thead><tr><th>Student</th><th>ID number</th></tr></thead>
           <tbody>
             <tr v-for="student in newestStudents" :key="student.idNumber">
-              <td><strong>{{ student.name }}</strong></td>
-              <td>{{ student.idNumber }}</td>
+              <td data-label="Student"><strong>{{ student.name }}</strong></td>
+              <td data-label="ID number">{{ student.idNumber }}</td>
             </tr>
             <tr v-if="!newestStudents.length"><td colspan="2" class="table-empty">No students yet.</td></tr>
           </tbody>
