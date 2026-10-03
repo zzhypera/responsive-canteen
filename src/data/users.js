@@ -20,10 +20,10 @@ export const seedUsers = [
   // { idNumber: '18102', name: 'Maria Santos',     role: 'student', password: 'student18102' },
   // { idNumber: '18103', name: 'Pedro Reyes',      role: 'student', password: 'student18103' },
   // { idNumber: '18104', name: 'Anna Garcia',      role: 'student', password: 'student18104' },
-  // { idNumber: '18105', name: 'Carlo Mendoza',    role: 'student', password: 'student18105' },
-  // { idNumber: '18106', name: 'Bea Villanueva',   role: 'student', password: 'student18106' },
-  // { idNumber: '18107', name: 'Miguel Torres',    role: 'student', password: 'student18107' },
-  // { idNumber: '18108', name: 'Sofia Ramos',      role: 'student', password: 'student18108' },
-  // { idNumber: '18109', name: 'Luis Navarro',     role: 'student', password: 'student18109' },
-  // { idNumber: '18110', name: 'Katrina Bautista', role: 'student', password: 'student18110' }
+  { idNumber: '18105', name: 'Carlo Mendoza',    role: 'student', password: 'student18105' },
+  { idNumber: '18106', name: 'Bea Villanueva',   role: 'student', password: 'student18106' },
+  { idNumber: '18107', name: 'Miguel Torres',    role: 'student', password: 'student18107' },
+  { idNumber: '18108', name: 'Sofia Ramos',      role: 'student', password: 'student18108' },
+  { idNumber: '18109', name: 'Luis Navarro',     role: 'student', password: 'student18109' },
+  { idNumber: '18110', name: 'Katrina Bautista', role: 'student', password: 'student18110' }
 ]
