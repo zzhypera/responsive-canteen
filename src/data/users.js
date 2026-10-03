@@ -24,6 +24,6 @@ export const seedUsers = [
   { idNumber: '18106', name: 'Jiliane Aguanza',   role: 'student', password: 'student18106' },
   { idNumber: '18107', name: 'Jonalyn Reyes',    role: 'student', password: 'student18107' },
   { idNumber: '18108', name: 'Armand Sarsale',      role: 'student', password: 'student18108' },
-  // { idNumber: '18109', name: 'Luis Navarro',     role: 'student', password: 'student18109' },
+  { idNumber: '18109', name: 'April Mae Ayta',     role: 'student', password: 'student18109' },
   // { idNumber: '18110', name: 'Katrina Bautista', role: 'student', password: 'student18110' }
 ]
