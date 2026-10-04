@@ -1,19 +1,16 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
+import { useLocalStorage } from '../composables/useLocalStorage'
 
 export const useOrdersStore = defineStore('orders', () => {
   const auth = useAuthStore()
-  const orders = ref(JSON.parse(localStorage.getItem('canteen_orders') || '[]'))
+  const orders = useLocalStorage('canteen_orders', [])
 
   // Students only see their own orders; admins use `orders` to see everything.
   const myOrders = computed(() =>
     orders.value.filter(order => order.customerId === auth.user?.idNumber)
   )
-
-  function save() {
-    localStorage.setItem('canteen_orders', JSON.stringify(orders.value))
-  }
 
   function createOrder({ items, total, pickupLocation, pickupTime, paymentMethod }) {
     const order = {
@@ -30,7 +27,6 @@ export const useOrdersStore = defineStore('orders', () => {
     }
 
     orders.value.unshift(order)
-    save()
     return order
   }
 
@@ -42,7 +38,6 @@ export const useOrdersStore = defineStore('orders', () => {
     const order = getOrder(id)
     if (order) {
       order.status = status
-      save()
     }
   }
 

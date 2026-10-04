@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import { useLocalStorage } from '../composables/useLocalStorage'
 import { defineStore } from 'pinia'
 import { ID_NUMBER_PATTERN, seedUsers } from '../data/users'
 
@@ -6,24 +7,16 @@ const SESSION_KEY = 'canteen_user'
 const TOKEN_KEY = 'canteen_token'
 const ACCOUNTS_KEY = 'canteen_accounts'
 
-function readJSON(key, fallback) {
-  try {
-    return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback
-  } catch {
-    return fallback
-  }
-}
-
 // Remove the password before keeping a user in the session.
 function toSession(account) {
   return { idNumber: account.idNumber, name: account.name, role: account.role }
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref(readJSON(SESSION_KEY, null))
+  const user = useLocalStorage(SESSION_KEY, null)
   const token = ref(localStorage.getItem(TOKEN_KEY) || '')
   // Accounts created through the Register page (students only)
-  const registered = ref(readJSON(ACCOUNTS_KEY, []))
+  const registered = useLocalStorage(ACCOUNTS_KEY, [])
 
   const isAuthenticated = computed(() => !!token.value && !!user.value)
   const isAdmin = computed(() => user.value?.role === 'admin')
@@ -35,7 +28,6 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = toSession(account)
     token.value = `session-${account.idNumber}`
     localStorage.setItem(TOKEN_KEY, token.value)
-    localStorage.setItem(SESSION_KEY, JSON.stringify(user.value))
   }
 
   function login(idNumber, password) {
@@ -62,7 +54,6 @@ export const useAuthStore = defineStore('auth', () => {
     // Self-registration always creates a student account. Admin accounts are seeded only.
     const account = { idNumber: id, name: fullName, role: 'student', password }
     registered.value.push(account)
-    localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(registered.value))
 
     startSession(account)
     return user.value
@@ -72,7 +63,6 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = ''
     user.value = null
     localStorage.removeItem(TOKEN_KEY)
-    localStorage.removeItem(SESSION_KEY)
   }
 
   return { user, token, isAuthenticated, isAdmin, accounts, students, login, register, logout }

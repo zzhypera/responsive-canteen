@@ -5,6 +5,15 @@
       <span v-if="!product.available" class="sold-out">Sold out</span>
     </RouterLink>
 
+    <button
+      type="button"
+      class="fav-button"
+      :class="{ active: favorite }"
+      :aria-pressed="favorite"
+      :aria-label="favorite ? 'Remove from favorites' : 'Add to favorites'"
+      @click="$emit('toggle-favorite', product)"
+    >{{ favorite ? '♥' : '♡' }}</button>
+
     <div class="food-card-body">
       <div class="food-category">{{ product.category }}</div>
       <RouterLink :to="`/menu/${product.id}`" class="food-name">{{ product.name }}</RouterLink>
@@ -12,7 +21,7 @@
 
       <div class="food-bottom">
         <span class="price">₱{{ product.price }}</span>
-        <button class="add-button" :disabled="!product.available" @click="add">
+        <button class="add-button" :disabled="!product.available" @click="$emit('add', product)">
           {{ product.available ? '+ Add' : 'Unavailable' }}
         </button>
       </div>
@@ -21,12 +30,12 @@
 </template>
 
 <script setup>
-import { useCartStore } from '../stores/cart'
+// Parent -> child: data comes in through props.
+// Child -> parent: the card never touches the cart itself, it only emits events.
+defineProps({
+  product: { type: Object, required: true },
+  favorite: { type: Boolean, default: false }
+})
 
-const props = defineProps({ product: Object })
-const cart = useCartStore()
-
-function add() {
-  cart.addToCart(props.product)
-}
+defineEmits(['add', 'toggle-favorite'])
 </script>

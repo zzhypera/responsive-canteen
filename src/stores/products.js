@@ -1,9 +1,11 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { products as initialProducts } from '../data/products'
+import { useLocalStorage } from '../composables/useLocalStorage'
 
 export const useProductsStore = defineStore('products', () => {
-  const products = ref([...initialProducts])
+  // Admin changes to the menu now survive a page refresh
+  const products = useLocalStorage('canteen_products', [...initialProducts])
 
   const categories = computed(() => ['All', ...new Set(products.value.map(p => p.category))])
 

@@ -1,58 +1,91 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import { useAuthStore } from '../stores/auth'
+import { useProductsStore } from '../stores/products'
+
+// Layouts stay eager (they are needed on first paint).
 import MainLayout from '../layouts/MainLayout.vue'
 import AdminLayout from '../layouts/AdminLayout.vue'
 
-import Home from '../views/Home.vue'
-import Menu from '../views/Menu.vue'
-import FoodDetails from '../views/FoodDetails.vue'
-import Cart from '../views/Cart.vue'
-import Checkout from '../views/Checkout.vue'
-import OrderSuccess from '../views/OrderSuccess.vue'
-import Orders from '../views/Orders.vue'
-import OrderDetails from '../views/OrderDetails.vue'
-import Profile from '../views/Profile.vue'
-import Login from '../views/auth/Login.vue'
-import Register from '../views/auth/Register.vue'
+// Pages are LAZY-LOADED: each `() => import(...)` becomes its own JS file that the
+// browser downloads only when the route is first visited.
+const Home = () => import('../views/Home.vue')
+const Menu = () => import('../views/Menu.vue')
+const FoodDetails = () => import('../views/FoodDetails.vue')
+const Favorites = () => import('../views/Favorites.vue')
+const Cart = () => import('../views/Cart.vue')
+const Checkout = () => import('../views/Checkout.vue')
+const OrderSuccess = () => import('../views/OrderSuccess.vue')
+const Orders = () => import('../views/Orders.vue')
+const OrderDetails = () => import('../views/OrderDetails.vue')
+const Profile = () => import('../views/Profile.vue')
+const NotFound = () => import('../views/NotFound.vue')
+const Login = () => import('../views/auth/Login.vue')
+const Register = () => import('../views/auth/Register.vue')
 
-import Dashboard from '../views/admin/Dashboard.vue'
-import AdminOrders from '../views/admin/Orders.vue'
-import Products from '../views/admin/Products.vue'
-import ProductForm from '../views/admin/ProductForm.vue'
-import Categories from '../views/admin/Categories.vue'
-import Customers from '../views/admin/Customers.vue'
+const Dashboard = () => import('../views/admin/Dashboard.vue')
+const AdminOrders = () => import('../views/admin/Orders.vue')
+const Products = () => import('../views/admin/Products.vue')
+const ProductForm = () => import('../views/admin/ProductForm.vue')
+const Categories = () => import('../views/admin/Categories.vue')
+const Customers = () => import('../views/admin/Customers.vue')
 
 const routes = [
   {
     path: '/',
     component: MainLayout,
     children: [
-      { path: '', name: 'home', component: Home },
-      { path: 'menu', name: 'menu', component: Menu },
-      { path: 'menu/:id', name: 'food-details', component: FoodDetails },
-      { path: 'cart', name: 'cart', component: Cart },
-      { path: 'checkout', name: 'checkout', component: Checkout, meta: { requiresAuth: true } },
-      { path: 'order-success', name: 'order-success', component: OrderSuccess, meta: { requiresAuth: true } },
-      { path: 'orders', name: 'orders', component: Orders, meta: { requiresAuth: true } },
-      { path: 'orders/:id', name: 'order-details', component: OrderDetails, meta: { requiresAuth: true } },
-      { path: 'profile', name: 'profile', component: Profile, meta: { requiresAuth: true } }
+      { path: '', name: 'home', component: Home, meta: { title: 'Home' } },
+      {
+        path: 'menu',
+        name: 'menu',
+        component: Menu,
+        meta: { title: 'Menu' },
+        // Route -> props: ?q=rice&category=Meals reaches the page as normal props
+        props: route => ({
+          initialSearch: String(route.query.q || ''),
+          initialCategory: String(route.query.category || 'All')
+        })
+      },
+      // props: true -> :id arrives as a prop, so the page does not need useRoute()
+      { path: 'menu/:id', name: 'food-details', component: FoodDetails, props: true, meta: { title: 'Food details' } },
+      { path: 'favorites', name: 'favorites', component: Favorites, meta: { title: 'Favorites' } },
+      { path: 'cart', name: 'cart', component: Cart, meta: { title: 'Cart' } },
+      { path: 'checkout', name: 'checkout', component: Checkout, meta: { requiresAuth: true, title: 'Checkout' } },
+      { path: 'order-success', name: 'order-success', component: OrderSuccess, meta: { requiresAuth: true, title: 'Order placed' } },
+      { path: 'orders', name: 'orders', component: Orders, meta: { requiresAuth: true, title: 'My orders' } },
+      { path: 'orders/:id', name: 'order-details', component: OrderDetails, props: true, meta: { requiresAuth: true, title: 'Order details' } },
+      { path: 'profile', name: 'profile', component: Profile, meta: { requiresAuth: true, title: 'Profile' } },
+      // Redirects and aliases
+      { path: 'home', redirect: { name: 'home' } },
+      { path: 'my-orders', redirect: { name: 'orders' } },
+      // 404: matches anything nothing else matched (keep this LAST)
+      { path: ':pathMatch(.*)*', name: 'not-found', component: NotFound, meta: { title: 'Page not found' } }
     ]
   },
-  { path: '/login', name: 'login', component: Login, meta: { guestOnly: true } },
-  { path: '/register', name: 'register', component: Register, meta: { guestOnly: true } },
+  { path: '/login', name: 'login', component: Login, meta: { guestOnly: true, title: 'Login' } },
+  { path: '/register', name: 'register', component: Register, meta: { guestOnly: true, title: 'Create account' } },
   {
     path: '/admin',
     component: AdminLayout,
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
-      { path: '', name: 'admin-dashboard', component: Dashboard },
-      { path: 'orders', name: 'admin-orders', component: AdminOrders },
-      { path: 'products', name: 'admin-products', component: Products },
-      { path: 'products/create', name: 'admin-product-create', component: ProductForm },
-      { path: 'products/:id/edit', name: 'admin-product-edit', component: ProductForm },
-      { path: 'categories', name: 'admin-categories', component: Categories },
-      { path: 'customers', name: 'admin-customers', component: Customers }
+      { path: '', name: 'admin-dashboard', component: Dashboard, meta: { title: 'Dashboard' } },
+      { path: 'orders', name: 'admin-orders', component: AdminOrders, meta: { title: 'Manage orders' } },
+      { path: 'products', name: 'admin-products', component: Products, meta: { title: 'Products' } },
+      { path: 'products/create', name: 'admin-product-create', component: ProductForm, meta: { title: 'Add product' } },
+      {
+        path: 'products/:id/edit',
+        name: 'admin-product-edit',
+        component: ProductForm,
+        props: true,
+        meta: { title: 'Edit product' },
+        // Per-route guard: unknown product ids go back to the list
+        beforeEnter: to => {
+          if (!useProductsStore().getProduct(to.params.id)) return { name: 'admin-products' }
+        }
+      },
+      { path: 'categories', name: 'admin-categories', component: Categories, meta: { title: 'Categories' } },
+      { path: 'customers', name: 'admin-customers', component: Customers, meta: { title: 'Customers' } }
     ]
   }
 ]
@@ -60,11 +93,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
-    return { top: 0 }
+  linkActiveClass: 'router-link-active',
+  // Back/forward restores the old scroll position; new pages start at the top
+  scrollBehavior(to, from, savedPosition) {
+    return savedPosition || { top: 0 }
   }
 })
 
+// Global guard: login / admin / guest-only checks
 router.beforeEach(to => {
   const auth = useAuthStore()
   const needsAuth = to.matched.some(r => r.meta.requiresAuth)
@@ -76,6 +112,11 @@ router.beforeEach(to => {
   }
   if (needsAdmin && !auth.isAdmin) return { name: 'menu' }
   if (guestOnly && auth.isAuthenticated) return { name: auth.isAdmin ? 'admin-dashboard' : 'menu' }
+})
+
+// Set the browser tab title from meta.title
+router.afterEach(to => {
+  document.title = to.meta.title ? `${to.meta.title} · Campus Canteen` : 'Campus Canteen'
 })
 
 export default router

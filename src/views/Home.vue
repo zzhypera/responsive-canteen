@@ -32,7 +32,14 @@
       </div>
 
       <div class="food-grid">
-        <FoodCard v-for="product in featured" :key="product.id" :product="product" />
+        <FoodCard
+          v-for="product in featured"
+          :key="product.id"
+          :product="product"
+          :favorite="favorites.isFavorite(product.id)"
+          @add="addToCart"
+          @toggle-favorite="toggleFavorite"
+        />
       </div>
     </section>
 
@@ -53,8 +60,10 @@
 <script setup>
 import { computed } from 'vue'
 import { useProductsStore } from '../stores/products'
+import { useCatalogActions } from '../composables/useCatalogActions'
 import FoodCard from '../components/FoodCard.vue'
 
 const store = useProductsStore()
+const { favorites, addToCart, toggleFavorite } = useCatalogActions()
 const featured = computed(() => store.products.slice(0, 4))
 </script>

@@ -3,8 +3,8 @@
     <button
       v-for="category in categories"
       :key="category"
-      :class="{ active: modelValue === category }"
-      @click="$emit('update:modelValue', category)"
+      :class="{ active: model === category }"
+      @click="model = category"
     >
       {{ category }}
     </button>
@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
+// defineModel (Vue 3.4+) is the short way to write the modelValue prop + update:modelValue emit.
+const model = defineModel({ type: String, default: 'All' })
+
 defineProps({
-  modelValue: { type: String, default: 'All' },
   categories: { type: Array, default: () => [] }
 })
-
-defineEmits(['update:modelValue'])
 </script>

@@ -1,8 +1,10 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useLocalStorage } from '../composables/useLocalStorage'
 
 export const useCartStore = defineStore('cart', () => {
-  const items = ref(JSON.parse(localStorage.getItem('canteen_cart') || '[]'))
+  // Saved to localStorage automatically (see composables/useLocalStorage.js)
+  const items = useLocalStorage('canteen_cart', [])
 
   const totalItems = computed(() =>
     items.value.reduce((sum, item) => sum + item.quantity, 0)
@@ -11,10 +13,6 @@ export const useCartStore = defineStore('cart', () => {
   const totalPrice = computed(() =>
     items.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
   )
-
-  function save() {
-    localStorage.setItem('canteen_cart', JSON.stringify(items.value))
-  }
 
   function addToCart(product, quantity = 1) {
     const existing = items.value.find(item => item.productId === product.id)
@@ -30,29 +28,23 @@ export const useCartStore = defineStore('cart', () => {
         quantity
       })
     }
-
-    save()
   }
 
   function increaseQuantity(item) {
     item.quantity++
-    save()
   }
 
   function decreaseQuantity(item) {
     if (item.quantity > 1) item.quantity--
     else removeFromCart(item.productId)
-    save()
   }
 
   function removeFromCart(productId) {
     items.value = items.value.filter(item => item.productId !== productId)
-    save()
   }
 
   function clearCart() {
     items.value = []
-    save()
   }
 
   return { items, totalItems, totalPrice, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart }

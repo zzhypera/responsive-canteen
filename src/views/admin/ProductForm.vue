@@ -5,50 +5,68 @@
       <RouterLink to="/admin/products" class="back-link">← Products</RouterLink>
     </div>
 
-    <form class="admin-form" @submit.prevent="save">
-      <label>Product name<input v-model="form.name" required /></label>
-      <label>Description<textarea v-model="form.description" rows="4"></textarea></label>
+    <form class="admin-form" novalidate @submit.prevent="handleSubmit">
+      <label>Product name<input v-model="values.name" @blur="validateField('name')" />
+        <small v-if="errors.name" class="field-error">{{ errors.name }}</small>
+      </label>
+      <label>Description<textarea v-model="values.description" rows="4"></textarea></label>
 
       <div class="form-two">
-        <label>Price<input v-model.number="form.price" type="number" min="0" required /></label>
-        <label>Category<select v-model="form.category"><option v-for="category in categories" :key="category">{{ category }}</option></select></label>
+        <label>Price<input v-model.number="values.price" type="number" min="0" @blur="validateField('price')" />
+          <small v-if="errors.price" class="field-error">{{ errors.price }}</small>
+        </label>
+        <label>Category<select v-model="values.category"><option v-for="category in categories" :key="category">{{ category }}</option></select></label>
       </div>
 
-      <label>Image URL<input v-model="form.image" type="url" placeholder="https://..." /></label>
+      <label>Image URL<input v-model="values.image" type="url" placeholder="https://..." /></label>
 
       <label class="checkbox-option">
-        <input v-model="form.available" type="checkbox" />
+        <input v-model="values.available" type="checkbox" />
         Product is available
       </label>
 
+      <p v-if="submitError" class="error-message">{{ submitError }}</p>
+
       <div class="form-actions">
         <RouterLink to="/admin/products" class="btn btn-light">Cancel</RouterLink>
-        <button class="btn btn-primary">Save product</button>
+        <button class="btn btn-primary" :disabled="submitting">Save product</button>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useProductsStore } from '../../stores/products'
+import { minValue, required, useForm } from '../../composables/useForm'
+import { useToast } from '../../composables/useToast'
 
-const route = useRoute()
+// `id` only exists on the edit route (props: true in router/index.js)
+const props = defineProps({ id: { type: String, default: '' } })
+
 const router = useRouter()
 const store = useProductsStore()
-const editing = computed(() => !!route.params.id)
-const existing = editing.value ? store.getProduct(route.params.id) : null
+const { show } = useToast()
+const editing = computed(() => !!props.id)
+const existing = editing.value ? store.getProduct(props.id) : null
 
 const categories = ['Breakfast', 'Meals', 'Snacks', 'Drinks', 'Desserts']
-const form = reactive(existing ? { ...existing } : {
-  name: '', description: '', price: 0, category: 'Meals',
-  image: '', available: true
-})
 
-function save() {
-  if (editing.value) store.updateProduct(route.params.id, form)
-  else store.addProduct(form)
-  router.push('/admin/products')
-}
+const { values, errors, submitError, submitting, validateField, handleSubmit } = useForm({
+  initial: existing ? { ...existing } : {
+    name: '', description: '', price: 0, category: 'Meals',
+    image: '', available: true
+  },
+  rules: {
+    name: [required('Product name is required.')],
+    price: [minValue(1, 'Price must be at least 1.')]
+  },
+  onSubmit: values => {
+    if (editing.value) store.updateProduct(props.id, values)
+    else store.addProduct(values)
+    show(editing.value ? 'Product updated' : 'Product added')
+    router.push('/admin/products')
+  }
+})
 </script>

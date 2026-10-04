@@ -36,20 +36,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
 import { useProductsStore } from '../stores/products'
 import { useCartStore } from '../stores/cart'
 
-const route = useRoute()
+// `id` comes from the route (props: true in router/index.js)
+const props = defineProps({ id: { type: String, required: true } })
+
 const products = useProductsStore()
 const cart = useCartStore()
-const product = products.getProduct(route.params.id)
+const product = computed(() => products.getProduct(props.id))
 const quantity = ref(1)
 const added = ref(false)
 
 function add() {
-  cart.addToCart(product, quantity.value)
+  cart.addToCart(product.value, quantity.value)
   added.value = true
   setTimeout(() => (added.value = false), 1800)
 }

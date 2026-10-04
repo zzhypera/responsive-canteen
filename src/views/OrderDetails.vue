@@ -17,9 +17,9 @@
         <h2>Items</h2>
         <div v-for="item in order.items" :key="item.productId" class="summary-item">
           <span>{{ item.name }} × {{ item.quantity }}</span>
-          <strong>₱{{ item.price * item.quantity }}</strong>
+          <strong>{{ formatPrice(item.price * item.quantity) }}</strong>
         </div>
-        <div class="summary-total"><span>Total</span><strong>₱{{ order.total }}</strong></div>
+        <div class="summary-total"><span>Total</span><strong>{{ formatPrice(order.total) }}</strong></div>
       </div>
 
       <div class="form-card">
@@ -39,16 +39,17 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useFormat } from '../composables/useFormat'
 import { useOrdersStore } from '../stores/orders'
 import { useAuthStore } from '../stores/auth'
 import OrderStatus from '../components/OrderStatus.vue'
 
-const route = useRoute()
+const props = defineProps({ id: { type: String, required: true } })
+const { formatPrice } = useFormat()
 const store = useOrdersStore()
 const auth = useAuthStore()
 const order = computed(() => {
-  const found = store.getOrder(route.params.id)
+  const found = store.getOrder(props.id)
   if (!found) return null
   return auth.isAdmin || found.customerId === auth.user?.idNumber ? found : null
 })

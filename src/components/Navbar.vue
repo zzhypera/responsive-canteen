@@ -8,6 +8,7 @@
     <nav id="main-nav" class="nav-links" :class="{ open }" aria-label="Main navigation">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/menu">Menu</RouterLink>
+      <RouterLink to="/favorites">Favorites<span v-if="favorites.count" class="nav-count">{{ favorites.count }}</span></RouterLink>
       <RouterLink to="/orders">Orders</RouterLink>
       <RouterLink v-if="auth.isAdmin" to="/admin">Admin</RouterLink>
       <RouterLink v-if="auth.isAuthenticated" to="/profile" class="nav-mobile-only">Profile</RouterLink>
@@ -41,9 +42,12 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { useAuthStore } from '../stores/auth'
+import { useFavoritesStore } from '../stores/favorites'
+import { throttle } from '../composables/useDebounce'
 
 const cart = useCartStore()
 const auth = useAuthStore()
+const favorites = useFavoritesStore()
 const route = useRoute()
 const open = ref(false)
 
@@ -51,7 +55,8 @@ const open = ref(false)
 watch(() => route.fullPath, () => (open.value = false))
 
 function onKey(e) { if (e.key === 'Escape') open.value = false }
-function onResize() { if (window.innerWidth > 720) open.value = false }
+// Limiting events: resize fires dozens of times per second, so run it at most every 150 ms
+const onResize = throttle(() => { if (window.innerWidth > 720) open.value = false }, 150)
 
 onMounted(() => {
   window.addEventListener('keydown', onKey)
