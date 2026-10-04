@@ -61,7 +61,7 @@ const router = useRouter()
 const cart = useCartStore()
 const orders = useOrdersStore()
 
-const locations = ['Main Campus Canteen', 'Building A Canteen', 'Student Center Canteen']
+const locations = ['SB Cafeteria', 'College Canteen', 'Higshchool Canteen', 'Near Gate']
 const methods = ['Cash', 'GCash', 'Card']
 
 const form = reactive({
