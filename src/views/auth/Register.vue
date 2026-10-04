@@ -27,7 +27,7 @@
           <small v-if="errors.password" class="field-error">{{ errors.password }}</small>
         </label>
         <p v-if="submitError" class="error-message">{{ submitError }}</p>
-        <button class="btn btn-primary full-button" :disabled="submitting">{{ submitting ? 'Creating...' : 'Create account' }}</button>
+        <button class="btn btn-primary full-button" :disabled="submitting">{{  submitting ? 'Creating...' : 'Create account' }}</button>
       </form>
 
       <p class="auth-footer">Already have an account? <RouterLink to="/login">Log in</RouterLink></p>
