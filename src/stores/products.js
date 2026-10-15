@@ -6,8 +6,15 @@ import { useLocalStorage } from '../composables/useLocalStorage'
 export const useProductsStore = defineStore('products', () => {
   // Admin changes to the menu now survive a page refresh
   const products = useLocalStorage('canteen_products', [...initialProducts])
+  const categoryNames = useLocalStorage('canteen_categories', ['Breakfast', 'Meals', 'Snacks', 'Drinks', 'Desserts'])
 
-  const categories = computed(() => ['All', ...new Set(products.value.map(p => p.category))])
+  // Refresh seeded product images so older saved catalogs use the local assets too.
+  products.value = products.value.map(product => {
+    const seededProduct = initialProducts.find(item => item.id === product.id)
+    return seededProduct ? { ...product, image: seededProduct.image } : product
+  })
+
+  const categories = computed(() => ['All', ...new Set([...categoryNames.value, ...products.value.map(p => p.category).filter(Boolean)])])
 
   function getProduct(id) {
     return products.value.find(product => product.id === Number(id))
@@ -26,5 +33,5 @@ export const useProductsStore = defineStore('products', () => {
     products.value = products.value.filter(p => p.id !== Number(id))
   }
 
-  return { products, categories, getProduct, addProduct, updateProduct, deleteProduct }
+  return { products, categoryNames, categories, getProduct, addProduct, updateProduct, deleteProduct }
 })

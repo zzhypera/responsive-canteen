@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Welcome message and today's date. -->
     <div class="admin-heading">
       <div>
         <span class="eyebrow">OVERVIEW</span>
@@ -8,6 +9,7 @@
       <span class="date-chip">{{ new Date().toLocaleDateString() }}</span>
     </div>
 
+    <!-- Summary cards show today's activity and account counts. -->
     <div class="stats-grid">
       <div class="stat-card"><span>Today's orders</span><strong>{{ todayOrders.length }}</strong><small>Across all pickup points</small></div>
       <div class="stat-card"><span>Today's sales</span><strong>₱{{ todaySales.toLocaleString() }}</strong><small>From today's orders</small></div>
@@ -15,6 +17,7 @@
       <div class="stat-card"><span>Students</span><strong>{{ auth.students.length }}</strong><small>Registered accounts</small></div>
     </div>
 
+    <!-- Show recent orders with customer, total, and current status. -->
     <div class="admin-panel">
       <div class="panel-heading"><h2>Recent orders</h2><RouterLink to="/admin/orders" class="text-link">View all →</RouterLink></div>
       <div class="table-wrap">
@@ -33,6 +36,7 @@
       </div>
     </div>
 
+    <!-- Show the latest student registrations. -->
     <div class="admin-panel">
       <div class="panel-heading"><h2>Newest students</h2><RouterLink to="/admin/customers" class="text-link">View all →</RouterLink></div>
       <div class="table-wrap">
@@ -59,13 +63,17 @@ import { useOrdersStore } from '../../stores/orders'
 const auth = useAuthStore()
 const store = useOrdersStore()
 
+// Keep only orders created today for the dashboard's daily figures.
 const todayOrders = computed(() => {
   const today = new Date().toDateString()
   return store.orders.filter(order => new Date(order.createdAt).toDateString() === today)
 })
 
+// Add today's order totals to calculate sales for the day.
 const todaySales = computed(() => todayOrders.value.reduce((sum, order) => sum + order.total, 0))
+// Count all orders that still need staff attention.
 const pendingCount = computed(() => store.orders.filter(order => order.status === 'pending').length)
+// Show the five latest orders and students in the overview tables.
 const recentOrders = computed(() => store.orders.slice(0, 5))
 
 // Newest first: students who just registered appear at the top, then the seeded ones.

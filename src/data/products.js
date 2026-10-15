@@ -1,19 +1,37 @@
+import chickenRiceImage from '../assets/ChickenRice.jpg'
+import campusBurgerImage from '../assets/burger.jpg'
+import icedCoffeeImage from '../assets/icedCarmel.webp'
+import pancakeImage from '../assets/pancake.jpg'
+import spaghettiImage from '../assets/saghetti.jpg'
+import friesImage from '../assets/Fries.jpg'
+import fruitTeaImage from '../assets/fruitTea.jpg'
+import brownieImage from '../assets/chocolate-brownie.jpg'
+import veggieWrapImage from '../assets/vegiiewrap.jpg'
+import grilledCheeseImage from '../assets/GrilledCheese.jpg'
+import lemonadeImage from '../assets/lemonade.webp'
+import caesarSaladImage from '../assets/caesarsalad.jpg'
+import mangoSmoothieImage from '../assets/mangosmoothie.jpg'
+import sinigangImage from '../assets/sinigang.jpg'
+import haloHaloImage from '../assets/halo halo.webp'
+import mangoFloatImage from '../assets/mangofloat.jpg'
+import matchaImage from '../assets/matcha.jpg'
+
 export const products = [
-  { id: 1, name: 'Chicken Rice Meal', description: 'Grilled chicken, steamed rice, and house sauce.', price: 85, category: 'Meals', image: 'https://healthyfitnessmeals.com/wp-content/uploads/2024/12/Chicken-rice-meal-prep-9-1.jpg', available: true },
-  { id: 2, name: 'Campus Burger', description: 'Beef patty, lettuce, tomato, cheese, and special sauce.', price: 65, category: 'Snacks', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80', available: true },
-  { id: 3, name: 'Iced Coffee', description: 'Cold brewed coffee with creamy milk and ice.', price: 45, category: 'Drinks', image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=900&q=80', available: true },
-  { id: 4, name: 'Pancake Stack', description: 'Soft pancakes served with syrup and butter.', price: 60, category: 'Breakfast', image: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=900&q=80', available: true },
-  { id: 5, name: 'Spaghetti Meal', description: 'Sweet-style spaghetti with cheese and savory sauce.', price: 75, category: 'Meals', image: 'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?auto=format&fit=crop&w=900&q=80', available: true },
-  { id: 6, name: 'French Fries', description: 'Crispy golden fries with a light seasoning.', price: 40, category: 'Snacks', image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=80', available: true },
-  { id: 7, name: 'Fruit Tea', description: 'Refreshing iced tea with fruit flavors.', price: 50, category: 'Drinks', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=900&q=80', available: true },
-  { id: 8, name: 'Chocolate Brownie', description: 'Rich chocolate brownie with a soft center.', price: 45, category: 'Desserts', image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?auto=format&fit=crop&w=900&q=80', available: true },
-  {id: 9, name: 'Veggie Wrap', description: 'A healthy wrap filled with fresh vegetables and hummus.', price: 55, category: 'Meals', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1hL7dgTGocKR6cyW9XDcO3SueMn6z4cZkZvQEBlKszUzKOViRrIqVfSfB&s=10', available: true },
-  {id: 10, name: 'Grilled Cheese Sandwich', description: 'Toasted sandwich with melted cheese and a side of chips.', price: 50, category: 'Snacks', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLEDcz6Sd__50Dl3sXn1F82_OwdmmfTvw7IevPJkYWlB3arg-K4CyjWoeb&s=10', available: true },
-  {id: 11, name: 'Lemonade', description: 'Freshly squeezed lemonade with a hint of mint.', price: 35, category: 'Drinks', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBvU_Qkz6t45pty_NwEF866ELdRjfNpUpT_aZw91L0QBzY83aTnOUL6IM&s=10', available: true },
-  {id: 12, name: 'Caesar Salad', description: 'Crisp romaine lettuce with Caesar dressing and croutons.', price: 60, category: 'Meals', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvR3TXh20GeQovfWqVEuXWzuvDprww8_V8JL7Qrgv4M_jXZEgpZhVD4UE&s=10', available: true },
-  {id: 13, name: 'Mango Smoothie', description: 'Creamy mango smoothie made with fresh mangoes and yogurt.', price: 55, category: 'Drinks', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrw46sr58hdaxddinRsHzguCl8Z9-79ChQz5allSwpM2-tvPJZkkKwY54J&s=10', available: true }, 
-  {id: 14, name: 'Sinigang na Baboy', description: 'A traditional Filipino sour soup made with pork and vegetables.', price: 80, category: 'Meals', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP2_eC179REDGM2dXV-I6j9RdTqajkkpsYR-x83D_aMA&s=10', available: true },
-  {id: 15, name: 'Halo-Halo', description: 'A popular Filipino dessert made with crushed ice, sweet beans, fruits, and milk.', price: 70, category: 'Desserts', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxktmguWBr4sM1Tas4rYrpdsL0dlkL_kf0l1F4BQEbuQ&s=10', available: true },
-  {id: 16, name: 'Mango Float', description: 'A refreshing dessert drink made with mangoes, ice cream, and soda.', price: 65, category: 'Desserts', image: 'https://www.kawalingpinoy.com/wp-content/uploads/2017/06/mango-royale-7-1152x1536.jpg', available: true },
-  {id: 17, name: 'Iced Matcha Latte', description: 'A chilled matcha latte made with green tea powder and milk.', price: 60, category: 'Drinks', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVjPrpV90uWVRy7rQNVhJMHiakSa9tZ1m5d37MZ48uXr4lfcdhvQENwLw&s=10', available: true }
+  { id: 1, name: 'Chicken Rice Meal', description: 'Grilled chicken, steamed rice, and house sauce.', price: 85, category: 'Meals', image: chickenRiceImage, available: true },
+  { id: 2, name: 'Campus Burger', description: 'Beef patty, lettuce, tomato, cheese, and special sauce.', price: 65, category: 'Snacks', image: campusBurgerImage, available: true },
+  { id: 3, name: 'Iced Coffee', description: 'Cold brewed coffee with creamy milk and ice.', price: 45, category: 'Drinks', image: icedCoffeeImage, available: true },
+  { id: 4, name: 'Pancake Stack', description: 'Soft pancakes served with syrup and butter.', price: 60, category: 'Breakfast', image: pancakeImage, available: true },
+  { id: 5, name: 'Spaghetti Meal', description: 'Sweet-style spaghetti with cheese and savory sauce.', price: 75, category: 'Meals', image: spaghettiImage, available: true },
+  { id: 6, name: 'French Fries', description: 'Crispy golden fries with a light seasoning.', price: 40, category: 'Snacks', image: friesImage, available: true },
+  { id: 7, name: 'Fruit Tea', description: 'Refreshing iced tea with fruit flavors.', price: 50, category: 'Drinks', image: fruitTeaImage, available: true },
+  { id: 8, name: 'Chocolate Brownie', description: 'Rich chocolate brownie with a soft center.', price: 45, category: 'Desserts', image: brownieImage, available: true },
+  { id: 9, name: 'Veggie Wrap', description: 'A healthy wrap filled with fresh vegetables and hummus.', price: 55, category: 'Meals', image: veggieWrapImage, available: true },
+  { id: 10, name: 'Grilled Cheese Sandwich', description: 'Toasted sandwich with melted cheese and a side of chips.', price: 50, category: 'Snacks', image: grilledCheeseImage, available: true },
+  { id: 11, name: 'Lemonade', description: 'Freshly squeezed lemonade with a hint of mint.', price: 35, category: 'Drinks', image: lemonadeImage, available: true },
+  { id: 12, name: 'Caesar Salad', description: 'Crisp romaine lettuce with Caesar dressing and croutons.', price: 60, category: 'Meals', image: caesarSaladImage, available: true },
+  { id: 13, name: 'Mango Smoothie', description: 'Creamy mango smoothie made with fresh mangoes and yogurt.', price: 55, category: 'Drinks', image: mangoSmoothieImage, available: true },
+  { id: 14, name: 'Sinigang na Baboy', description: 'A traditional Filipino sour soup made with pork and vegetables.', price: 80, category: 'Meals', image: sinigangImage, available: true },
+  { id: 15, name: 'Halo-Halo', description: 'A popular Filipino dessert made with crushed ice, sweet beans, fruits, and milk.', price: 70, category: 'Desserts', image: haloHaloImage, available: true },
+  { id: 16, name: 'Mango Float', description: 'A refreshing dessert drink made with mangoes, ice cream, and soda.', price: 65, category: 'Desserts', image: mangoFloatImage, available: true },
+  { id: 17, name: 'Iced Matcha Latte', description: 'A chilled matcha latte made with green tea powder and milk.', price: 60, category: 'Drinks', image: matchaImage, available: true }
 ]

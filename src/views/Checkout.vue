@@ -59,6 +59,7 @@
 </template>
 
 <script setup>
+import { watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { useOrdersStore } from '../stores/orders'
@@ -102,4 +103,7 @@ const { values, errors, submitError, submitting, handleSubmit } = useForm({
     router.push({ name: 'order-success', query: { id: order.id } })
   }
 })
+
+// Persist in-progress checkout selections immediately, even before placing the order.
+watch(values, value => { saved.value = { ...value } }, { deep: true, flush: 'sync' })
 </script>

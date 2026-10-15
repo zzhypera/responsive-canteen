@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { ID_NUMBER_PATTERN } from '../../data/users'
@@ -45,9 +45,12 @@ import { matches, minLength, required, useForm } from '../../composables/useForm
 const router = useRouter()
 const auth = useAuthStore()
 const showPassword = ref(false)
+const registerDraftKey = 'canteen_register_draft'
+let registerDraft = {}
+try { registerDraft = JSON.parse(localStorage.getItem(registerDraftKey) || '{}') } catch {}
 
 const { values, errors, submitError, submitting, validateField, handleSubmit } = useForm({
-  initial: { name: '', idNumber: '', password: '' },
+  initial: { name: registerDraft.name || '', idNumber: registerDraft.idNumber || '', password: '' },
   rules: {
     name: [required('Please enter your full name.')],
     idNumber: [
@@ -58,9 +61,12 @@ const { values, errors, submitError, submitting, validateField, handleSubmit } =
   },
   onSubmit: ({ name, idNumber, password }) => {
     auth.register(name, idNumber, password)
+    try { localStorage.removeItem(registerDraftKey) } catch {}
     router.push('/menu')
   }
 })
+
+watch(() => [values.name, values.idNumber], ([name, idNumber]) => { try { localStorage.setItem(registerDraftKey, JSON.stringify({ name, idNumber })) } catch {} }, { flush: 'sync' })
 
 function onlyDigits() {
   values.idNumber = values.idNumber.replace(/\D/g, '').slice(0, 5)

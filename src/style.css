@@ -464,3 +464,22 @@ td select { border: 1px solid var(--line); padding: 6px 8px; border-radius: 6px;
 .toast-host { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 100; display: grid; gap: 8px; width: max-content; max-width: calc(100vw - 32px); pointer-events: none; }
 .toast { background: var(--ink); color: white; padding: 11px 18px; border-radius: 999px; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,.2); animation: toast-in .2s ease-out; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+
+/* Responsive category management additions; original site styling is preserved. */
+.category-editor { width: min(100%, 720px); margin: 0 0 28px; }
+.category-actions { justify-content: flex-start; flex-wrap: wrap; margin-top: 16px; }
+.category-admin-card { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  .admin-heading { align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+  .admin-heading > .btn { width: 100%; }
+  .category-admin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .category-admin-card { padding: 18px; }
+  .category-actions .btn { flex: 1; padding-inline: 10px; }
+  .admin-form { padding: 20px; }
+}
+@media (max-width: 420px) {
+  .category-admin-grid { grid-template-columns: minmax(0, 1fr); }
+  .form-actions { flex-wrap: wrap; }
+  .form-actions > * { flex: 1; text-align: center; }
+}

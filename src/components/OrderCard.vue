@@ -15,6 +15,7 @@
 <script>
 // This component is written with the OPTIONS API on purpose, to compare with the
 // <script setup> (Composition API) used everywhere else, e.g. views/OrderDetails.vue.
+
 // Shared helpers come from a MIXIN here; the Composition version uses the
 // useFormat() composable instead.
 import formatMixin from '../mixins/formatMixin'

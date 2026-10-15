@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { ID_NUMBER_PATTERN } from '../../data/users'
@@ -44,10 +44,13 @@ const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
 const showPassword = ref(false)
+const loginDraftKey = 'canteen_login_draft'
+let loginDraft = {}
+try { loginDraft = JSON.parse(localStorage.getItem(loginDraftKey) || '{}') } catch {}
 
 // Form handling: values, validation rules and submit state live in one composable.
 const { values, errors, submitError, submitting, validateField, handleSubmit } = useForm({
-  initial: { idNumber: '', password: '' },
+  initial: { idNumber: loginDraft.idNumber || '', password: '' },
   rules: {
     idNumber: [
       required('Please enter your ID number.'),
@@ -57,6 +60,7 @@ const { values, errors, submitError, submitting, validateField, handleSubmit } =
   },
   onSubmit: ({ idNumber, password }) => {
     const user = auth.login(idNumber, password)
+    try { localStorage.removeItem(loginDraftKey) } catch {}
     const redirect = route.query.redirect
     // Admins can't be sent into student-only pages by accident, students can't open /admin
     if (typeof redirect === 'string' && redirect.startsWith('/') && (user.role === 'admin' || !redirect.startsWith('/admin'))) {
@@ -66,6 +70,8 @@ const { values, errors, submitError, submitting, validateField, handleSubmit } =
     }
   }
 })
+
+watch(() => values.idNumber, idNumber => { try { localStorage.setItem(loginDraftKey, JSON.stringify({ idNumber })) } catch {} }, { flush: 'sync' })
 
 function onlyDigits() {
   values.idNumber = values.idNumber.replace(/\D/g, '').slice(0, 5)

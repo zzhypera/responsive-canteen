@@ -1,15 +1,18 @@
 <template>
   <div>
+    <!-- Page title and shortcut for creating a new menu item. -->
     <div class="admin-heading">
       <div><span class="eyebrow">MENU MANAGEMENT</span><h1>Products</h1></div>
       <RouterLink to="/admin/products/create" class="btn btn-primary">+ Add product</RouterLink>
     </div>
 
+    <!-- List products with their category, price, availability, and actions. -->
     <div class="admin-panel">
       <div class="table-wrap">
         <table>
           <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody>
+            <!-- Render one table row for each product in the store. -->
             <tr v-for="product in products.products" :key="product.id">
               <td data-label="Product"><div class="table-product"><img :src="product.image" /><span>{{ product.name }}</span></div></td>
               <td data-label="Category">{{ product.category }}</td>
@@ -31,6 +34,7 @@
 import { useProductsStore } from '../../stores/products'
 const products = useProductsStore()
 
+// Ask for confirmation before removing a product from the menu.
 function remove(id) {
   if (confirm('Delete this product?')) products.deleteProduct(id)
 }

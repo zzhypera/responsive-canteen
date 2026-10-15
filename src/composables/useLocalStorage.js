@@ -22,7 +22,7 @@ export function useLocalStorage(key, defaultValue) {
         /* storage full or disabled: keep working in memory */
       }
     },
-    { deep: true }
+    { deep: true, flush: 'sync' }
   )
 
   return state
